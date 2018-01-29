@@ -1,4 +1,15 @@
 <?php
+/**
+ * Theme Name: Wp Rest Transient
+ * Description: Prof of concept for caching RestApi calls
+ * Author: Ivan Ruzevic
+ * Author URI: https://mustra-designs.com/
+ * Version: 1.0
+ * Text Domain: test
+ *
+ * @package test
+ */
+
 
   if ( ! function_exists( 'test_get_page_cache_name_by_slug' ) ) {
     /**

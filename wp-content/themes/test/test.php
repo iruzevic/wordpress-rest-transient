@@ -9,7 +9,7 @@
  */
 
  // Load simple version of WordPress, this file can be located anywhere.
-require_once( '../../../wp-config-simple.php' );
+require_once( 'wp-config-simple.php' );
 
 // Load function to be able to call some functions.
 require_once('functions.php');

@@ -2,10 +2,10 @@
 /**
  * Generate rest doute
  * 
- * Route location: /wp-content/themes/test/test.php?slug=sample-page&type=page
+ * Route location: /wp-content/themes/wordpress-rest-transient/test.php?slug=sample-page&type=page
  *
  * @since   1.0.0
- * @package test
+ * @package wordpress-rest-transient
  */
 
  // Load simple version of WordPress, this file can be located anywhere.
@@ -23,7 +23,7 @@ if ( ( isset( $_GET['slug'] ) || ! empty( $_GET['slug'] ) ) && ( isset( $_GET['t
 }
 
 // Get transient by name.
-$cache = get_transient( test_get_page_cache_name_by_slug( $post_slug, $post_type ) );
+$cache = get_transient( wrt_get_page_cache_name_by_slug( $post_slug, $post_type ) );
 
 // Return error on false.
 if ( $cache === false ) {

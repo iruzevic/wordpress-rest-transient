@@ -1,17 +1,17 @@
 <?php
 /**
- * Theme Name: Wp Rest Transient
- * Description: Prof of concept for caching RestApi calls
+ * Theme Name: WordPress Rest Transient
+ * Description: Proof of concept for caching RestApi calls
  * Author: Ivan Ruzevic
  * Author URI: https://mustra-designs.com/
  * Version: 1.0
- * Text Domain: test
+ * Text Domain: wordpress-rest-transient
  *
- * @package test
+ * @package wordpress-rest-transient
  */
 
 
-  if ( ! function_exists( 'test_get_page_cache_name_by_slug' ) ) {
+  if ( ! function_exists( 'wrt_get_page_cache_name_by_slug' ) ) {
     /**
      * Get Page cache name for transient by post slug and type.
      *
@@ -21,18 +21,18 @@
      *
      * @since  1.0.0
      */
-    function test_get_page_cache_name_by_slug( $post_slug = null, $post_type = null ) {
+    function wrt_get_page_cache_name_by_slug( $post_slug = null, $post_type = null ) {
       if( ! $post_slug || ! $post_type ) {
         return false;
       }
 
       $post_slug = str_replace( '__trashed', '', $post_slug );
 
-      return 'test_data_' . $post_type . '_' . $post_slug;
+      return 'wrt_data_' . $post_type . '_' . $post_slug;
     }
   }
 
-  if ( ! function_exists( 'test_get_page_data_by_slug' ) ) {
+  if ( ! function_exists( 'wrt_get_page_data_by_slug' ) ) {
     /**
      * Get full post data by post slug and type.
      *
@@ -42,7 +42,7 @@
      *
      * @since  1.0.0
      */
-    function test_get_page_data_by_slug( $post_slug = null, $post_type = null ) {
+    function wrt_get_page_data_by_slug( $post_slug = null, $post_type = null ) {
       if( ! $post_slug || ! $post_type ) {
         return false;
       }
@@ -70,7 +70,7 @@
     }
   }
 
-  if ( ! function_exists( 'test_get_json_page' ) ) {
+  if ( ! function_exists( 'wrt_get_json_page' ) ) {
     /**
      * Return Page in JSON format
      *
@@ -80,16 +80,16 @@
      *
      * @since  1.0.0
      */
-    function test_get_json_page( $post_slug = null, $post_type = null ) {
+    function wrt_get_json_page( $post_slug = null, $post_type = null ) {
       if( ! $post_slug || ! $post_type ) {
         return false;
       }
 
-      return json_encode( test_get_page_data_by_slug( $post_slug, $post_type ) );
+      return json_encode( wrt_get_page_data_by_slug( $post_slug, $post_type ) );
     }
   }
 
-  if ( ! function_exists( 'test_get_allowed_post_types' ) ) {
+  if ( ! function_exists( 'wrt_get_allowed_post_types' ) ) {
     /**
      * Get the array of allowed types to do operations on.
      *
@@ -97,12 +97,12 @@
      *
      * @since 1.0.0
      */
-    function test_get_allowed_post_types() {
+    function wrt_get_allowed_post_types() {
       return array( 'post', 'page' );
     }
   }
 
-  if ( ! function_exists( 'test_is_post_type_allowed_to_save' ) ) {
+  if ( ! function_exists( 'wrt_is_post_type_allowed_to_save' ) ) {
     /**
      * Check if post type is allowed to be save in transient.
      *
@@ -111,12 +111,12 @@
      *
      * @since 1.0.0
      */
-    function test_is_post_type_allowed_to_save( $post_type = null ) {
+    function wrt_is_post_type_allowed_to_save( $post_type = null ) {
       if( ! $post_type ) {
         return false;
       }
 
-      $allowed_types = test_get_allowed_post_types();
+      $allowed_types = wrt_get_allowed_post_types();
 
       if ( in_array( $post_type, $allowed_types, true ) ) {
         return true;
@@ -126,9 +126,9 @@
     }
   }
 
-  add_action( 'save_post', 'test_update_page_transient' );
+  add_action( 'save_post', 'wrt_update_page_transient' );
 
-  if ( ! function_exists( 'test_update_page_transient' ) ) {
+  if ( ! function_exists( 'wrt_update_page_transient' ) ) {
     /**
      * Update Page to transient for caching on action hooks save_post.
      *
@@ -136,13 +136,13 @@
      *
      * @since 1.0.0
      */
-    function test_update_page_transient( $post_id ) {
+    function wrt_update_page_transient( $post_id ) {
       $post_status = get_post_status( $post_id );
       $post = get_post( $post_id );
       $post_slug = $post->post_name;
       $post_type = $post->post_type;
 
-      $cache_name = test_get_page_cache_name_by_slug( $post_slug, $post_type );
+      $cache_name = wrt_get_page_cache_name_by_slug( $post_slug, $post_type );
       if( ! $cache_name ) {
         return false;
       }
@@ -152,8 +152,8 @@
       } else if( $post_status === 'trash' ) {
         delete_transient( $cache_name );
       } else  {
-        if( test_is_post_type_allowed_to_save( $post_type ) ) {
-          $cache = test_get_json_page( $post_slug, $post_type );
+        if( wrt_is_post_type_allowed_to_save( $post_type ) ) {
+          $cache = wrt_get_json_page( $post_slug, $post_type );
           set_transient( $cache_name, $cache, 0 );
         }
       }

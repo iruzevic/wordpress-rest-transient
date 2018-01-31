@@ -3,7 +3,7 @@
  * Create simple wp configuration for Rest API routes
  *
  * @since 1.0.0
- * @package eightshift
+ * @package wordpress-rest-transient
  */
 
 define( 'SHORTINIT', true );
